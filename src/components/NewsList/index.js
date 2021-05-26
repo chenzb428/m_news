@@ -4,7 +4,8 @@ import tpl2 from './tpl/item2.tpl';
 import tpl3 from './tpl/item3.tpl';
 import listTpl from './tpl/index.tpl';
 import './index.scss';
-import { tplReplace } from '../../libs/utils';
+
+import { getItemNode, tplReplace } from '../../libs/utils';
 
 export default {
     name: 'NewsList',
@@ -53,5 +54,20 @@ export default {
                 img.style.opacity = '1';
             }
         })
+    },
+    bindEvent(oList, setCurrentNews) {
+        oList.addEventListener('click', this._goToDetail.bind(this, setCurrentNews), false);
+    },
+    _goToDetail(setCurrentNews) {
+        const oItem = getItemNode(arguments[1].target);
+
+        const options = {
+            index: oItem.dataset.index,
+            pageNum: oItem.dataset.page
+        }
+
+        setCurrentNews(options);
+
+        window.location.href = `detail.html?path=${location.pathname}`;
     }
 }

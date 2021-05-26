@@ -29,17 +29,38 @@ function setPageData(data, count) {
     return pageData;
 }
 
+/**
+ * 判断是否滑到底部
+ * @param {*} callback 
+ */
 function scrollToBottom(callback) {
     if (_getScrollTop() + _getWindowHeight() + 1 >= _getScrollHeight()) {
         callback();
     }
 }
 
+function getItemNode(target) {
+    while (target = target.parentNode) {
+        if (target.className.split(' ')[0] === 'news-item') {
+            return target;
+        }
+    }
+}
+
+function getUrlQueryValue(key) {
+    const reg = new RegExp('(^|&)' + key + '=([^&]*)(&|$)', 'i');
+    const res = window.location.search.substr(1).match(reg);
+
+    return res !== null ? decodeURIComponent(res[2]) : null;
+}
+
 export {
     tplReplace,
     scrollToTop,
     setPageData,
-    scrollToBottom
+    scrollToBottom,
+    getItemNode,
+    getUrlQueryValue
 }
 
 function _getScrollTop() {

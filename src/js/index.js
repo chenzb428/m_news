@@ -35,6 +35,7 @@ import MoreLoading from '../components/MoreLoading';
 
     function bindEvent() {
         NavBar.bindEvent(setType);
+        NewsList.bindEvent(oListWrapper, setCurrentNews);
         window.addEventListener('scroll', scrollToBottom.bind(null, getMoreList), false);
     }
 
@@ -103,6 +104,12 @@ import MoreLoading from '../components/MoreLoading';
                 }, 1500);
             }
         }
+    }
+
+    function setCurrentNews(options) {
+        const { index, pageNum } = options;
+        const currentNews = newsData[config.type][pageNum][index];
+        localStorage.setItem('currentNews', JSON.stringify(currentNews));
     }
 
     init();
