@@ -8,17 +8,19 @@ import Header from '../components/Header';
 import NavBar from '../components/NavBar';
 import NewsList from '../components/NewsList';
 import PageLoading from '../components/PageLoading';
+import MoreLoading from '../components/MoreLoading';
 
 ;((doc) => {
 
     const oApp = doc.querySelector('#app');
     let oListWrapper = null;
+    let t = null;
 
     const config = {
         type: 'top',
         count: 10,
         pageNum: 0,
-
+        isLoading: false
     }
 
     const newsData = {
@@ -33,7 +35,7 @@ import PageLoading from '../components/PageLoading';
 
     function bindEvent() {
         NavBar.bindEvent(setType);
-        window.addEventListener('scroll', scrollToBottom, false);
+        window.addEventListener('scroll', scrollToBottom.bind(null, getMoreList), false);
     }
 
     function render() {
@@ -56,13 +58,16 @@ import PageLoading from '../components/PageLoading';
             data,
             pageNum
         });
+        MoreLoading.remove(oListWrapper);
         oListWrapper.innerHTML += newsItemTpl;
+        config.isLoading = false;
         NewsList.imgShow();
     }
 
     function setType(type) {
         config.type = type;
         config.pageNum = 0;
+        config.isLoading = false;
         oListWrapper.innerHTML = '';
         setNewsList();
     }
@@ -81,6 +86,23 @@ import PageLoading from '../components/PageLoading';
             oListWrapper.innerHTML = '';
             renderList(newsData[type][pageNum]);
         }, 1500);
+    }
+
+    function getMoreList() {
+        if (!config.isLoading) {
+            config.pageNum ++;
+            clearTimeout(t);
+            const { pageNum, type } = config;
+            if (pageNum >= newsData[type].length) {
+                MoreLoading.add(oListWrapper, false);
+            } else {
+                config.isLoading = true;
+                MoreLoading.add(oListWrapper, true);
+                t = setTimeout(() => {
+                    setNewsList();
+                }, 1500);
+            }
+        }
     }
 
     init();

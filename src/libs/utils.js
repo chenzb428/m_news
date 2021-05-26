@@ -30,7 +30,7 @@ function setPageData(data, count) {
 }
 
 function scrollToBottom(callback) {
-    if (_getScrollTop() + _getWindowHeight() >= _getScrollHeight()) {
+    if (_getScrollTop() + _getWindowHeight() + 1 >= _getScrollHeight()) {
         callback();
     }
 }

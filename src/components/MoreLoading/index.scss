@@ -1,0 +1,19 @@
+.more-loading {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    height: .3rem;
+    margin-bottom: .1rem;
+    color: #999;
+    font-size: .14rem;
+
+    &.loading::before {
+        content: '';
+        display: block;
+        width: .15rem;
+        height: .15rem;
+        margin-right: .05rem;
+        background: url(../../assets/image/s_loading.gif) no-repeat .15rem .15rem 0 0;
+    }
+}
