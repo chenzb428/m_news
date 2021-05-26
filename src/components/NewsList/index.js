@@ -19,7 +19,6 @@ export default {
             tpl = '';
         
         data.map((item, index) => {
-            console.log(item);
             if (!item.thumbnail_pic_s) {
                 tpl = tpl0;
             } else if (item.thumbnail_pic_s && !item.thumbnail_pic_s02) {

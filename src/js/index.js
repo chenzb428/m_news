@@ -2,10 +2,12 @@ import './imports';
 
 import request from '../models/index';
 import { NEWS_TYPE } from '../data';
+import { scrollToBottom } from '../libs/utils';
 
 import Header from '../components/Header';
 import NavBar from '../components/NavBar';
 import NewsList from '../components/NewsList';
+import PageLoading from '../components/PageLoading';
 
 ;((doc) => {
 
@@ -31,6 +33,7 @@ import NewsList from '../components/NewsList';
 
     function bindEvent() {
         NavBar.bindEvent(setType);
+        window.addEventListener('scroll', scrollToBottom, false);
     }
 
     function render() {
@@ -59,18 +62,25 @@ import NewsList from '../components/NewsList';
 
     function setType(type) {
         config.type = type;
-        console.log(config.type);
+        config.pageNum = 0;
+        oListWrapper.innerHTML = '';
+        setNewsList();
     }
 
     async function setNewsList() {
         const { type, count, pageNum } = config;
 
         if (newsData[type]) {
+            renderList(newsData[type][pageNum]);
             return;
         }
 
+        oListWrapper.innerHTML = PageLoading.tpl();
         newsData[type] = await request.getNewsList(type, count);
-        renderList(newsData[type][pageNum]);
+        setTimeout(() => {
+            oListWrapper.innerHTML = '';
+            renderList(newsData[type][pageNum]);
+        }, 1500);
     }
 
     init();
