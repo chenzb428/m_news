@@ -1,5 +1,6 @@
 import './imports';
 
+import request from '../models/index';
 import { NEWS_TYPE } from '../data';
 
 import Header from '../components/Header';
@@ -10,12 +11,18 @@ import NavBar from '../components/NavBar';
     const oApp = doc.querySelector('#app');
 
     const config = {
-        type: 'top'
+        type: 'top',
+        count: 10
     }
 
-    const init = () => {
+    const newsData = {
+
+    }
+
+    const init = async () => {
         render();
         bindEvent();
+        await setNewsList();
     }
 
     function render() {
@@ -37,6 +44,17 @@ import NavBar from '../components/NavBar';
     function setType(type) {
         config.type = type;
         console.log(config.type);
+    }
+
+    async function setNewsList() {
+        const { type, count } = config;
+
+        if (newsData[type]) {
+            return;
+        }
+
+        newsData[type] = await request.getNewsList(type, count);
+        console.log(newsData);
     }
 
     init();

@@ -3,6 +3,7 @@ import listTpl from './tpl/index.tpl'
 import './index.scss';
 
 import { tplReplace } from '../../libs/utils';
+import { scrollToTop } from '../../libs/utils';
 
 export default {
     name: 'NavBar',
@@ -36,6 +37,7 @@ export default {
         if (className === 'item') {
             const type = target.dataset.type;
             setType(type);
+            scrollToTop();
             items[this._curIdx].className = 'item';
             this._curIdx = [].indexOf.call(items, target);
             items[this._curIdx].className += ' current';
