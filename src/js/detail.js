@@ -48,7 +48,7 @@ import Follow from '../components/Follow';
             followedList = followedList.filter(item => item.uniquekey !== currentNews.uniquekey);
         }
 
-        localStorage.setItem('followedLiat', JSON.stringify(followedList));
+        localStorage.setItem('followedList', JSON.stringify(followedList));
     }
 
     init();
