@@ -1,0 +1,19 @@
+.error-tip {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    z-index: 3;
+    margin: -.4rem 0 0 -.4rem;
+    width: 1rem;
+    height: .11rem;
+
+    img {
+        width: 1rem;
+        height: 1rem;
+    }
+    p {
+        margin-top: .1rem;
+        font-size: .14rem;
+        color: #999;
+    }
+}

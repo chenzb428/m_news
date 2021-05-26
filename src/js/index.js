@@ -9,6 +9,7 @@ import NavBar from '../components/NavBar';
 import NewsList from '../components/NewsList';
 import PageLoading from '../components/PageLoading';
 import MoreLoading from '../components/MoreLoading';
+import ErrorTip from '../components/ErrorTip';
 
 ;((doc) => {
 
@@ -82,11 +83,18 @@ import MoreLoading from '../components/MoreLoading';
         }
 
         oListWrapper.innerHTML = PageLoading.tpl();
-        newsData[type] = await request.getNewsList(type, count);
-        setTimeout(() => {
+        newsData[type] = await request.getNewsList(type, count).catch(error => {
             oListWrapper.innerHTML = '';
-            renderList(newsData[type][pageNum]);
-        }, 1500);
+            oListWrapper.innerHTML += ErrorTip.tpl({
+                text: '没有找到网络！'
+            });
+        });
+        if (newsData[type]) {
+            setTimeout(() => {
+                oListWrapper.innerHTML = '';
+                renderList(newsData[type][pageNum]);
+            }, 1500);
+        }
     }
 
     function getMoreList() {
