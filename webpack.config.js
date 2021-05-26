@@ -113,6 +113,15 @@ module.exports = {
         watchOptions: {
             ignored: /node_modules/
         },
+        proxy: {
+            "/api": {
+              target: "http://v.juhe.cn",
+              changeOrigin: true,
+              pathRewrite: {
+                "^/api": ''
+              }
+            }
+        },
         open: true,
         host: 'localhost',
         port: 3000
