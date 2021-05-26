@@ -1,5 +1,5 @@
 import itemTpl from './tpl/item.tpl';
-import listTpl from './tpl/index.tpl'
+import listTpl from './tpl/index.tpl';
 import './index.scss';
 
 import { tplReplace } from '../../libs/utils';

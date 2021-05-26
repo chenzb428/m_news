@@ -5,14 +5,18 @@ import { NEWS_TYPE } from '../data';
 
 import Header from '../components/Header';
 import NavBar from '../components/NavBar';
+import NewsList from '../components/NewsList';
 
 ;((doc) => {
 
     const oApp = doc.querySelector('#app');
+    let oListWrapper = null;
 
     const config = {
         type: 'top',
-        count: 10
+        count: 10,
+        pageNum: 0,
+
     }
 
     const newsData = {
@@ -21,8 +25,12 @@ import NavBar from '../components/NavBar';
 
     const init = async () => {
         render();
-        bindEvent();
         await setNewsList();
+        bindEvent();
+    }
+
+    function bindEvent() {
+        NavBar.bindEvent(setType);
     }
 
     function render() {
@@ -33,12 +41,20 @@ import NavBar from '../components/NavBar';
             showRightIcon: true
         });
         const navBarTpl = NavBar.tpl(NEWS_TYPE);
+        const newsListTpl = NewsList.listTpl(82);
 
-        oApp.innerHTML += headerTpl + navBarTpl;
+        oApp.innerHTML += headerTpl + navBarTpl + newsListTpl;
+        oListWrapper = oApp.querySelector('.news-list');
     }
 
-    function bindEvent() {
-        NavBar.bindEvent(setType);
+    function renderList(data) {
+        const { pageNum } = config;
+        const newsItemTpl = NewsList.tpl({
+            data,
+            pageNum
+        });
+        oListWrapper.innerHTML += newsItemTpl;
+        NewsList.imgShow();
     }
 
     function setType(type) {
@@ -47,14 +63,14 @@ import NavBar from '../components/NavBar';
     }
 
     async function setNewsList() {
-        const { type, count } = config;
+        const { type, count, pageNum } = config;
 
         if (newsData[type]) {
             return;
         }
 
         newsData[type] = await request.getNewsList(type, count);
-        console.log(newsData);
+        renderList(newsData[type][pageNum]);
     }
 
     init();

@@ -14,6 +14,7 @@ class Service extends HTTP {
                     key: KEY
                 },
                 success(data) {
+                    console.log(data);
                     const pageData = setPageData(data.result.data, count);
                     resolve(pageData);
                 },
